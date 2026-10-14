@@ -2,12 +2,24 @@
 
 **Author:** Akshay Kumar, Dir, Solutions Architecture ([akshay.kumar2@cohesity.com](mailto:akshay.kumar2@cohesity.com))
 
-A Claude skill that audits your Cohesity protection posture from live Helios data and publishes it as a live, private Claude Artifact that refreshes every 4 hours: what is not protected, which policies miss your standards, which protection groups are paused or violating their SLA, and whether source registrations are healthy.
+A Claude skill, also available as a Microsoft Copilot Studio agent, that audits your Cohesity protection posture from live Helios data and publishes it as a live, private Claude Artifact that refreshes every 4 hours: what is not protected, which policies miss your standards, which protection groups are paused or violating their SLA, and whether source registrations are healthy.
 
-- Skill: [`skill/Cohesity-Protection-Coverage-Audit/SKILL.md`](skill/Cohesity-Protection-Coverage-Audit/SKILL.md) (the full page template is embedded in it)
+- Claude skill: [`claude/Cohesity-Protection-Coverage-Audit/SKILL.md`](claude/Cohesity-Protection-Coverage-Audit/SKILL.md) (the full page template is embedded in it)
 - Output: one claude.ai **Artifact** titled `Cohesity Protection Coverage And Policy Compliance Audit` (no static HTML file)
 - Refresh: scheduled task `cohesity-protection-coverage-refresh`, cron `0 */4 * * *`
 - Data source: the **Helios MCP server** (`helios-mcp` connector). Everything is read-only.
+
+## Two Versions
+
+| | Claude skill | Microsoft Copilot Studio agent |
+|---|---|---|
+| Folder | [`claude/`](claude/Cohesity-Protection-Coverage-Audit/SKILL.md) | [`copilot-studio/`](copilot-studio/README.md) |
+| Output | Live, private Claude Artifact, refreshed every 4 hours | Answers in chat, with tables, on demand |
+| Helios access | `helios-mcp` connector, read-only | Helios MCP server added as a tool, read-only |
+| Setup | Install the skill in Claude (see Install below) | Paste `instructions.md`, upload `knowledge/` files, add the Helios MCP tool |
+| Screenshot | Below | Not applicable (chat answers) |
+
+The sections below describe the Claude skill unless a heading says Copilot Studio.
 
 ## What you get
 
@@ -54,7 +66,7 @@ Retention and schedule units come back mixed (Days, Weeks, Months, Years) whatev
 
 ## Install
 
-1. Zip the folder `skill/Cohesity-Protection-Coverage-Audit` so `SKILL.md` is inside it.
+1. Zip the folder `claude/Cohesity-Protection-Coverage-Audit` so `SKILL.md` is inside it.
 2. Add it as a custom skill in Claude (Settings, Skills, upload) or copy it into your skills directory.
 3. Confirm the Helios MCP connector is connected.
 
@@ -98,17 +110,28 @@ If `helios-mcp` is down or its token has expired, a scheduled refresh does not c
 - Not-connected clusters cannot be queried and show as `n/a`.
 - The snapshots-past-retention check is sampled and optional.
 
-## Screenshots
+## Screenshots (Claude Version)
 
 ![Protection Coverage Audit](docs/screenshots/protection-coverage-audit.png)
 
 _Captured from the published artifact; cluster and group names are lab data._
+
+## Microsoft Copilot Studio Version
+
+The same logic as a Copilot Studio agent lives in [`copilot-studio/`](copilot-studio/README.md): `instructions.md` (agent instructions), `knowledge/` (two files to upload as Knowledge), `starters.md` (conversation starters) and step-by-step setup. It answers in chat and does not publish a page, schedule itself, or offer a cluster picker or CSV button. Add your Helios MCP server as a tool and enable only the read-only tools.
 
 ## Repository layout
 
 ```
 Cohesity-Protection-Coverage-Audit/
   README.md
-  docs/screenshots/protection-coverage-audit.png
-  skill/Cohesity-Protection-Coverage-Audit/SKILL.md
+  claude/
+    Cohesity-Protection-Coverage-Audit/SKILL.md      Claude skill (install this folder in Claude)
+  copilot-studio/
+    README.md          setup steps
+    instructions.md    agent instructions
+    knowledge/         files to upload as Knowledge
+    starters.md        conversation starters
+  docs/
+    screenshots/protection-coverage-audit.png
 ```
