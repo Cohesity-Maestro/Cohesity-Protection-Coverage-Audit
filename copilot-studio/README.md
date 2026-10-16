@@ -1,6 +1,24 @@
 # Cohesity Protection Coverage And Policy Compliance Agent For Microsoft Copilot Studio
 
-Protection coverage and policy compliance audit, as a Copilot Studio agent. This is the same logic as the Claude skill in `../claude/`, rewritten as agent instructions and knowledge files. For a sample answer, see [SAMPLE-OUTPUT.md](SAMPLE-OUTPUT.md).
+Protection coverage and policy compliance audit, as a Copilot Studio agent. This is the same logic as the Claude skill in `../claude/`, rewritten as agent instructions and knowledge files.
+
+## Sample output
+
+**Prompt:** `Give me a protection coverage and policy compliance audit for cluster sac01-pm-haswell8-p1`
+
+**Model:** GPT-5 Chat. Lab data. Captured in the Copilot Studio test pane in Light mode.
+
+![Protection Coverage agent answer in Copilot Studio](../docs/screenshots/protection-coverage-audit-copilot.png)
+
+### Notes
+
+| Topic | Note |
+|---|---|
+| Format | The answer is chat text with tables. The Claude skill gives a live, filterable page. See the sample in [claude/README.md](../claude/README.md). |
+| Scope | Name one cluster for the fastest answer. |
+| Standards | The defaults are a 24 hour backup interval and 30 days of retention. They are a baseline, not a regulatory requirement. |
+| Accuracy | The agent follows the instructions but is a language model. Compare a few answers with Helios before you share the agent. |
+| Your data | Cluster and group names in the image are lab data. Your answers will differ. |
 
 ## What is in this folder
 
