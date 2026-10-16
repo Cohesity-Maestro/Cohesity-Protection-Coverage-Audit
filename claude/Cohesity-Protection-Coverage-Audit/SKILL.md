@@ -76,6 +76,14 @@ Compute `now` in **epoch microseconds** (`date -u +%s` x 1,000,000; all date fil
 
 Numbers must tie: for any selection the coverage-by-cluster bars use the selected clusters' `protected` / `unprotected`, and the KPI is their sum. Object counts include replicas of the same object on other clusters, so the sum over clusters is larger than the sum over environments (which is Helios-wide and de-duplicated); the scope note must say so.
 
+## Large Helios results (do this in the main session)
+
+A Helios tool result that is too large to return inline (for example `dataprotect-search-objects` or `dataprotect-get-object-snapshots`) is saved to a file such as `/var/folders/.../projects/session/<sessionId>/tool-results/<file>.txt`. That host path is not readable from the Linux shell or from subagents, so a delegated run cannot process the data. Collect and process the data yourself, in the main session:
+
+1. Translate a saved path for bash: replace the prefix up to `/projects/` with `/sessions/<session>/mnt/.claude/projects/` (find the file with `find /sessions -name '<file>.txt'`). Scheduled-task sessions have their own session id.
+2. Process the files with python and write one row per cluster or group to a JSON file as you go, so a long run survives a context reset.
+3. A result that is small enough to come back inline cannot be read from bash. Compute its figures directly and add them to the same JSON.
+
 ## Manual refresh
 
 The template has a **Refresh from Helios** button. A published page cannot call the Helios connector itself, so the second button copies the command `Run the Cohesity-Protection-Coverage-Audit skill to refresh this report from live Helios data`; paste it into Claude and it republishes the same artifact. Keep the button in every rebuild.
